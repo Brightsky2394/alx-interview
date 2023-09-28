@@ -1,6 +1,6 @@
 def pascal_triangle(n):
     list = []
-    if (n <= 0):
+    if n <= 0:
         return list
     triangles = [[1]]
     while len(triangles) != n:
