@@ -1,23 +1,17 @@
 #!/usr/bin/python3
-
-from collections import deque
+"""Script will unlock list of lists"""
 
 
 def canUnlockAll(boxes):
-    if not boxes:
-        return False
+    """This function will take a list of lists and the content
+       of a list will unlock other lists
+    """
 
-    n = len(boxes)
-    visited = set()
-    queue = deque([0])
-    visited.add(0)
-
-    while queue:
-        current_box = queue.popleft()
-
-        for key in boxes[current_box]:
-            if key not in visited and key < n:
-                visited.add(key)
-                queue.append(key)
-
-    return len(visited) == n
+    keys = [0]
+    for key in keys:
+        for boxKey in boxes[key]:
+            if boxKey not in keys and boxKey < len(boxes):
+                keys.append(boxKey)
+    if len(keys) == len(boxes):
+        return True
+    return False
