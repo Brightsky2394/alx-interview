@@ -1,43 +1,45 @@
 #!/usr/bin/python3
 
-""" reads stdin line by line and computes metric"""
+"""Script that reads stdin line by line and computes metrics"""
 
-if __name__ == '__main__':
+import sys
 
-    def printer(file_size, status):
-        '''Print logs'''
 
-        print("File size: {:d}".format(file_size))
-        for i in sorted(status.keys()):
-            if status[i] != 0:
-                print("{}: {}".format(i, status[i]))
+def printsts(dic, size):
+    """ WWPrints information """
+    print("File size: {:d}".format(size))
+    for i in sorted(dic.keys()):
+        if dic[i] != 0:
+            print("{}: {:d}".format(i, dic[i]))
 
-    file_size = 0
-    status = {"200": 0, "301": 0, "400": 0, "401": 0,
-              "403": 0, "404": 0, "405": 0, "500": 0}
 
-    counter = 0
-    try:
-        with open(0) as f:
-            for line in f:
-                counter += 1
-                data = line.split()
+sts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+       "404": 0, "405": 0, "500": 0}
 
-                try:
-                    file_size += int(data[-1])
-                except Exception:
-                    pass
+count = 0
+size = 0
 
-                try:
-                    st = data[-2]
-                    if st in status:
-                        status[st] += 1
+try:
+    for line in sys.stdin:
+        if count != 0 and count % 10 == 0:
+            printsts(sts, size)
 
-                except Exception:
-                    pass
-                if counter % 10 == 0:
-                    printer(file_size, status)
-            printer(file_size, status)
-    except KeyboardInterrupt:
-        printer(file_size, status)
-        raise
+        stlist = line.split()
+        count += 1
+
+        try:
+            size += int(stlist[-1])
+        except:
+            pass
+
+        try:
+            if stlist[-2] in sts:
+                sts[stlist[-2]] += 1
+        except:
+            pass
+    printsts(sts, size)
+
+
+except KeyboardInterrupt:
+    printsts(sts, size)
+    raise
